@@ -20,6 +20,7 @@ describe('Validation Tests ', () =>{
 
     it.only('Form Fill Error Validations', () => {
         cy.get('form').submit().focusOut();
-        cy.vendorIdError().stateError().cityError().nameError();
+        //Check for vendorId error,stateError,cityError, nameError, phoneError, emailError, 
+        cy.vendorIdError().stateError().cityError().nameError().phoneError().emailError().whereFoundIt();
     })
 })

@@ -4,9 +4,9 @@ Cypress.Commands.add('focusOut',() => {
     cy.get('textarea[class="b24-form-control"]').click();
 })
 
+//Check if vendorID is empty, check error message if its empty and if error message is visible
 Cypress.Commands.add('vendorIdError', () => {
 
-    //Check if vendorID is empty, check error message if its empty and if error message is visible
     cy.get('.b24-form-control')
        .eq(0)
         .click()
@@ -18,6 +18,7 @@ Cypress.Commands.add('vendorIdError', () => {
         .should('be.visible');
 })
 
+//Check if State is filled 
 Cypress.Commands.add('stateError', () =>{
     cy.get('.b24-form-control')
        .eq(1)
@@ -29,9 +30,9 @@ Cypress.Commands.add('stateError', () =>{
          .should('be.visible');
  })
 
-//All Validation errors after submit empty form
+ // City input only show if State input is filled - Code belown select Rj State to be able to test City 
 Cypress.Commands.add('cityError', () => {
-    // City input only show if State input is filled - Code belown select Rj State to be able to test City 
+   
     cy.get('.b24-form-control').eq(1).click();
     cy.get('[class="b24-form-control-list-selector-item-title"')
        .contains('span','RJ')
@@ -46,7 +47,10 @@ Cypress.Commands.add('cityError', () => {
         .focusOut();
 })
 
+
+//Name input checked and error message verified
 Cypress.Commands.add('nameError', () => {
+    
     cy.get('input[name="name"]')
        .should('have.value','')
         .focusOut();
@@ -56,49 +60,39 @@ Cypress.Commands.add('nameError', () => {
 })
 
 
-//     //Check if Name field is empty, check error message if its empty and if error message is visible
-//     cy.get('input[name="name"]')
-//        .click()
-//         .should('have.value','')
-//          .focusOut();
+//Phone checking and error message verified
+Cypress.Commands.add('phoneError', () => {
+    cy.get('input[name="phone"]')
+       .should('have.value','+55')
+        .focusOut();
+    cy.get('.b24-form-field-phone')
+       .eq(0)
+        .should('be.visible');
+})
 
-//     cy.get('.b24-form-control-alert-message')
-//        .eq(29)
-//         .should('contain','O campo é obrigatório')
-//          .should('be.visible');
-    
-//     //Check if Phone field has default value, check error message if it has default value after interaction
-//     //and check if it has a empty field and its
-//     cy.get('input[name="phone"]')
-//        .click()
-//         .should('have.value','+55')
-//          .focusOut();
+Cypress.Commands.add('emailError', () => {
+    cy.get('.b24-form-field-email')
+       .should('have.value','')
+        .focusOut();
+    cy.get('.b24-form-control-alert-message')
+       .eq(31)
+        .should('be.visible')
+;})
 
-//     cy.get('.b24-form-control-alert-message')
-//        .eq(30)
-//         .should('contain','O valor do campo está incorreto')
-//          .should('be.visible');
-
-//     cy.get('input[name="phone"]')
-//        .clear()
-//         .should('have.value','')
-//          .focusOut();
-
-//     cy.get('.b24-form-control-alert-message')
-//      .eq(30)
-//       .should('contain','O campo é obrigatório')
-//        .should('be.visible');
-
-    
-    
-//     //Validate empty Email AND Invalid Typing (without @ and dotcom)
-//     cy.get('input[name="email"]')
-//        .click()
-//         .focusOut();
-//     cy.get('.b24-form-control-alert-message')
-//      .eq(31)
-//       .should('contain','O campo é obrigatório')
-//        .should('be.visible');
+Cypress.Commands.add('whereFoundIt', () => {
+    cy.get('.b24-form-control-alert-message')
+       .eq(32)
+        .should('be.visible');
+    cy.get('.b24-form-control')
+       .eq(32)
+        .click();
+    cy.get('.b24-form-control-list-selector-item-title')
+       .eq(11)
+        .click();
+    cy.get('.b24-form-control-alert-message')
+       .eq(32)
+        .should('not.visible');
+})
 
 // //TODO ABOVE
 
