@@ -1,5 +1,5 @@
-// Field only check for validation errors after focus is lost by the element, this function click
-// on textarea element to trigger the focus out of primary element
+// Field only show validation errors after focus is lost by the element, this function click
+// on textarea element to trigger the focus out of primary  element
 Cypress.Commands.add('focusOut',() => {
     cy.get('textarea[class="b24-form-control"]').click();
 })
