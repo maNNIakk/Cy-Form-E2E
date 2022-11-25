@@ -17,13 +17,14 @@
 
 ## Techniques
 
-I used:
+Used:
 
 ```
 Validation Tests 
 Limit + Equivalence Tests
 Api Tests
 E2E Tests
+Performance Test
 ```
 Could be used:
 ```
