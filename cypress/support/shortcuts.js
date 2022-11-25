@@ -1,8 +1,9 @@
-// Field only show validation errors after focus is lost by the element, this function click
+// Field only show validation errors after focus is lost by the element, this function below click
 // on textarea element to trigger the focus out of primary  element
 Cypress.Commands.add('focusOut',() => {
-    cy.get('textarea[class="b24-form-control"]').click();
+    cy.get('textarea[class="b24-form-control"]').click({force:true});
 })
+
 
 //Check if vendorID is empty, check error message if its empty and if error message is visible
 Cypress.Commands.add('vendorIdError', () => {
@@ -10,7 +11,7 @@ Cypress.Commands.add('vendorIdError', () => {
     cy.get('.b24-form-control')
        .eq(0)
         .click()
-         .should('have.value','')
+         .should('be.empty')
           .focusOut();
     cy.get('.b24-form-control-alert-message')
       .eq(0)
@@ -22,8 +23,9 @@ Cypress.Commands.add('vendorIdError', () => {
 Cypress.Commands.add('stateError', () =>{
     cy.get('.b24-form-control')
        .eq(1)
-        .should('have.value','')
-         .focusOut();
+        .should('be.empty')
+         .click()
+          .focusOut();
     cy.get('.b24-form-control-alert-message')
        .eq(1)
         .should('contain','O campo é obrigatório')
@@ -33,11 +35,10 @@ Cypress.Commands.add('stateError', () =>{
  // City input only show if State input is filled - Code belown select Rj State to be able to test City 
 Cypress.Commands.add('cityError', () => {
    
-    cy.get('.b24-form-control').eq(1).click();
-    cy.get('[class="b24-form-control-list-selector-item-title"')
-       .contains('span','RJ')
-        .click()
-        .focusOut();
+    cy.get('.b24-form-control')
+       .eq(1)
+        .click();
+    cy.get('[class="b24-form-control-list-selector-item-title"').contains('span','RJ').click()
     cy.get('.b24-form-control')
        .eq(24)
         .click()
@@ -52,8 +53,9 @@ Cypress.Commands.add('cityError', () => {
 Cypress.Commands.add('nameError', () => {
     
     cy.get('input[name="name"]')
-       .should('have.value','')
-        .focusOut();
+       .should('be.empty')
+        .click()
+         .focusOut();
     cy.get('.b24-form-control-alert-message')
        .eq(29)
         .should('be.visible');
@@ -62,43 +64,108 @@ Cypress.Commands.add('nameError', () => {
 
 //Phone checking and error message verified
 Cypress.Commands.add('phoneError', () => {
+
+    cy.get('.b24-form-control-alert-message')
+       .eq(30)
+        .should('not.be.visible');
     cy.get('input[name="phone"]')
        .should('have.value','+55')
-        .focusOut();
-    cy.get('.b24-form-field-phone')
-       .eq(0)
+        .click()
+         .focusOut();
+    cy.get('.b24-form-control-alert-message')
+       .eq(30)
         .should('be.visible');
 })
+//
+Cypress.Commands.add('emailEmptyError', () => {
 
-Cypress.Commands.add('emailError', () => {
-    cy.get('.b24-form-field-email')
-       .should('have.value','')
-        .focusOut();
+    cy.get('.b24-form-control')
+       .eq(31)
+        .should('be.empty')
+         .click()
+         .focusOut();
     cy.get('.b24-form-control-alert-message')
        .eq(31)
-        .should('be.visible')
-;})
+        .should('contain','O campo é obrigatório');
+})
 
-Cypress.Commands.add('whereFoundIt', () => {
+Cypress.Commands.add('emailInvalidError', () => {
+    cy.get('.b24-form-control')
+       .eq(31)
+        .should('be.empty')
+         .type('example.com')
+          .focusOut();
+    cy.get('.b24-form-control-alert-message')
+       .eq(31)
+        .should('contain','E-mail incorreto especificado');
+})
+
+
+Cypress.Commands.add('whereFoundError', () => {
+
+    cy.get('.b24-form-control-alert-message')
+       .eq(32)
+        .should('not.be.visible');
+    cy.get('.b24-form-control')
+       .eq(32)
+        .click()
+         .focusOut();
     cy.get('.b24-form-control-alert-message')
        .eq(32)
         .should('be.visible');
-    cy.get('.b24-form-control')
-       .eq(32)
-        .click();
-    cy.get('.b24-form-control-list-selector-item-title')
-       .eq(11)
-        .click();
-    cy.get('.b24-form-control-alert-message')
-       .eq(32)
-        .should('not.visible');
 })
 
-// //TODO ABOVE
+Cypress.Commands.add('whichProductError', () => {
+    cy.get('.b24-form-control-alert-message')
+       .eq(33)
+        .should('not.be.visible');
+    cy.get('.b24-form-control')
+       .eq(33)
+        .click()
+         .focusOut();
+    cy.get('.b24-form-control-alert-message')
+       .eq(33)
+        .should('be.visible')
+          .should('contain','O campo é obrigatório');
+        
+
+})
+
+Cypress.Commands.add('radioError', () => {
+    cy.get('.b24-form-control-alert-message')
+       .eq(34)
+         .should('not.be.visible');
+    cy.get('[type="radio"]')
+       .eq(0)
+        .focus()
+         .focusOut();
+    cy.get('.b24-form-control-alert-message')
+       .eq(34)
+        .should('be.visible')
+         .should('contain','O campo é obrigatório')
+})
+
+Cypress.Commands.add('dailyKmError', () => {
+    cy.get('.b24-form-control-alert-message')
+       .eq(35)
+        .should('not.be.visible');
+    cy.get('.b24-form-control')
+       .eq(36)
+        .click()
+         .focusOut()
+    cy.get('.b24-form-control-alert-message')
+       .eq(35)
+        .should('not.be.visible')
+})
 
 
 Cypress.Commands.add('fillForm', (vendorId,clientName,clientPhone,clientEmail,bikeModel) => {
 
+//TODO BELOW
+    cy.get('.b24-form-control-list-selector-item-title')
+       .eq(11)
+        .click();
+//TODO ABOVE
     //Get and fill vendor id number
     cy.get('input[type="number"]').eq(0).type(vendorId);
     //Open State Dropdown menu
