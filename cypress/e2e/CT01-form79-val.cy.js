@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 
-
+//All error/required messages validation (including those that should not appear)
 describe('Validation Tests ', () => {
     beforeEach(() => {
         cy.viewport(1300, 1300);
@@ -9,8 +9,11 @@ describe('Validation Tests ', () => {
     })
 
     //Simple "unit" testing with inputs and errors validations
+
     describe('Black-Box unit test', () => {
-        //All functions descriptions on support/shortcuts.js 
+
+        // ### All functions descriptions and references
+        //             on support/shortcuts.js ### 
         it('VendorId required', () => {
             cy.vendorIdError();
         })
@@ -30,11 +33,11 @@ describe('Validation Tests ', () => {
             cy.phoneError();
         })
 
-        it.only('Email Empty required', () => {
+        it('Email Empty required', () => {
             cy.emailEmptyError();
         })
 
-        it.only('Email Invalid required', () => {
+        it('Email Invalid required', () => {
             cy.emailInvalidError();
         })
 
@@ -50,26 +53,28 @@ describe('Validation Tests ', () => {
             cy.radioError()
         })
 
-        it('Average daily KM not required', () => {
-            cy.dailyKmError();
+        describe('Validations of elements included if "Preencher Formulário" is checked', () => {
+
+            it('Driver License required', () => {
+                cy.driverLicense();
+            })
+
+            it('Unknown field required', () => {
+                cy.unknownField()
+            })
+            
+            it('Average daily KM not required', () => {
+                cy.dailyKmError();
+            })
+
+            it('Attraction Radio not required', () => {
+                cy.attRadioError();
+            })
+    
+            it.only('Comment textarea not required', () => {
+                cy.commentError();
+            })
+
         })
     })
-
-
-
-
-
-
-
-
-
-
-
-    // it('Form Fill Error Validations', () => {
-    //     cy.get('form').submit().focusOut();
-    //     //Check for vendorId error,stateError,cityError, nameError, phoneError, emailError, 
-    //     cy.vendorIdError().stateError().cityError().nameError().phoneError().emailError().whereFoundIt();
-    // })
-
-
 })
