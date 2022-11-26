@@ -29,7 +29,7 @@ describe('Validation Tests ', () => {
             cy.nameError();
         })
 
-        it('Phone required', () => {
+        it.only('Phone invalid AND empty required', () => {
             cy.phoneError();
         })
 
@@ -63,18 +63,17 @@ describe('Validation Tests ', () => {
                 cy.unknownField()
             })
             
-            it('Average daily KM not required', () => {
-                cy.dailyKmError();
-            })
-
             it('Attraction Radio not required', () => {
                 cy.attRadioError();
             })
-    
-            it.only('Comment textarea not required', () => {
-                cy.commentError();
-            })
+        })
 
+        it('Average daily KM not required', () => {
+            cy.dailyKmError();
+        })
+
+        it('Comment textarea not required', () => {
+            cy.commentError();
         })
     })
 })

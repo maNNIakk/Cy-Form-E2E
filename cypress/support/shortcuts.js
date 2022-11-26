@@ -1,12 +1,13 @@
-// Field only show validation errors after focus is lost by the element, this function below click
-
-// on textarea element to trigger the focus out of primary  element
+// Field only show validation errors after focus is lost by the element, this function
+// below click on textarea element to trigger the focus out of primary  element
 Cypress.Commands.add('focusOut', () => {
-   cy.get('textarea[class="b24-form-control"]').click({ force: true });
+   cy.get('textarea[class="b24-form-control"]')
+      .click({ force: true });
 })
 
 
-//Check if vendorID is empty, check error message if its empty and if error message is visible
+//Check if field is empty before validation, interact and leave it blank, check if
+//error message is displayed with correct text
 Cypress.Commands.add('vendorIdError', () => {
 
    cy.get('.b24-form-control')
@@ -17,10 +18,11 @@ Cypress.Commands.add('vendorIdError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(0)
       .should('contain', 'O campo é obrigatório')
-      .should('be.visible');
+      .and('be.visible');
 })
 
-//Check if State is filled 
+//Check if field is empty/no value selected before validation, interact and leave
+//it blank, check if error message is displayed with correct text
 Cypress.Commands.add('stateError', () => {
    cy.get('.b24-form-control')
       .eq(1)
@@ -30,26 +32,33 @@ Cypress.Commands.add('stateError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(1)
       .should('contain', 'O campo é obrigatório')
-      .should('be.visible');
+      .and('be.visible');
 })
 
-// City input only show if State input is filled - Code belown select Rj State to be able to test City 
+//City field only show up after State is selected, 2 initial blocks of code
+// is present to do this interaction, then we yield City field list, interact
+// with it, leave it blank, and check if error message is displayed with correct text  
 Cypress.Commands.add('cityError', () => {
-
+   //Yield State Field
    cy.get('.b24-form-control')
       .eq(1)
       .click();
-   cy.get('[class="b24-form-control-list-selector-item-title"').contains('span', 'RJ').click()
+   //Yield State list and select RJ option
+   cy.get('[class="b24-form-control-list-selector-item-title"')
+      .contains('span', 'RJ')
+      .click();
+   //Now the City field is displayed
    cy.get('.b24-form-control')
       .eq(24)
       .click()
       .focusOut();
    cy.get('.b24-form-control-alert-message')
       .should('be.visible')
-      .focusOut();
+       .and('contain','O campo é obrigatório');
 })
 
-//Name input checked and error message verified
+//Check if field is empty before validation, interact and leave it blank, check if
+//error message is displayed with correct text
 Cypress.Commands.add('nameError', () => {
 
    cy.get('input[name="name"]')
@@ -58,10 +67,17 @@ Cypress.Commands.add('nameError', () => {
       .focusOut();
    cy.get('.b24-form-control-alert-message')
       .eq(29)
-      .should('be.visible');
+      .should('be.visible')
+       .and('contain','O campo é obrigatório');
 })
 
-//Phone checking and error message verified
+//Check if error message is hidden as it should, check if field has default value 
+// +55 (Brazil phone code), interact with it, leave with default value, check 
+// if error message about INCORRECT filling is displayed, with correct text
+//then
+//Check if previous error message is displayed correctly, yield and focus on phone
+//field, CLEAR the field, and check if EMPTY filling error message is displayed
+//with correct text
 Cypress.Commands.add('phoneError', () => {
 
    cy.get('.b24-form-control-alert-message')
@@ -73,10 +89,23 @@ Cypress.Commands.add('phoneError', () => {
       .focusOut();
    cy.get('.b24-form-control-alert-message')
       .eq(30)
-      .should('be.visible');
+      .should('be.visible')
+       .and('contain','O valor do campo está incorreto');
+   cy.get('input[name="phone"]')
+        .focus()
+         .clear()
+          .focusOut();
+    cy.get('.b24-form-control-alert-message')
+       .eq(30)
+       .should('be.visible')
+        .and('contain','O campo é obrigatório');
 })
-//
-Cypress.Commands.add('emailEmptyError', () => {
+
+//Check if email field has default value(empty in this case), interact with it, leave
+// with default value, check for Empty error message, with the correct text, THEN
+//Repeat process above, but type a incorrect email sample (without @) after yielding
+//the element, then check for Incorrect error message, with the correct text
+Cypress.Commands.add('emailError', () => {
 
    cy.get('.b24-form-control')
       .eq(31)
@@ -86,9 +115,6 @@ Cypress.Commands.add('emailEmptyError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(31)
       .should('contain', 'O campo é obrigatório');
-})
-
-Cypress.Commands.add('emailInvalidError', () => {
    cy.get('.b24-form-control')
       .eq(31)
       .should('be.empty')
@@ -124,7 +150,7 @@ Cypress.Commands.add('whichProductError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(33)
       .should('be.visible')
-      .should('contain', 'O campo é obrigatório');
+      .and('contain', 'O campo é obrigatório');
 
 
 })
@@ -140,7 +166,7 @@ Cypress.Commands.add('radioError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(34)
       .should('be.visible')
-      .should('contain', 'O campo é obrigatório')
+      .and('contain', 'O campo é obrigatório')
 })
 
 Cypress.Commands.add('driverLicense', () => {
@@ -199,31 +225,49 @@ Cypress.Commands.add('attRadioError', () => {
       .click();
    cy.get('.b24-form-control-alert-message')
       .eq(38)
-       .should('not.be.visible');
+      .should('not.be.visible');
    cy.get('.b24-form-control')
       .eq(37)
-       .should('be.visible')
+      .should('be.visible')
    cy.get('.b24-form-control-alert-message')
       .eq(38)
-       .should('not.be.visible');
+      .should('not.be.visible');
 })
 
 Cypress.Commands.add('commentError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(39)
-       .should('exist')
-        .should('not.be.visible');
+      .should('exist')
+      .and('not.be.visible');
    cy.get('.b24-form-control')
       .eq(41)
-       .should('exist')
-        .should('be.empty');
+      .should('exist')
+      .and('be.empty');
    cy.get('.b24-form-control-alert-message')
       .eq(39)
-       .should('exist')
-        .and('not.be.visible');
+      .should('exist')
+      .and('not.be.visible');
 
 })
 
+// All unit tests above integrated in a single function below
+Cypress.Commands.add('form79Validations', () => {
+   cy.vendorIdError()
+      .stateError()
+      .cityError()
+      .nameError()
+      .phoneError()
+      .emailEmptyError()
+      .emailInvalidError()
+      .whereFoundError()
+      .whichProductError()
+      .radioError()
+      .driverLicense()
+      .unknownField()
+      .dailyKmError()
+      .attRadioError()
+      .commentError()
+})
 
 
 Cypress.Commands.add('fillForm', (vendorId, clientName, clientPhone, clientEmail, bikeModel) => {
