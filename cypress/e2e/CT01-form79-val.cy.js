@@ -12,8 +12,8 @@ describe('Validation Tests ', () => {
 
     describe('Black-Box unit test', () => {
 
-        // ### All functions descriptions and references
-        //             on support/shortcuts.js ### 
+        // ### All functions descriptions and references ##
+        //           ## on support/shortcuts.js ### 
         it('VendorId required', () => {
             cy.vendorIdError();
         })

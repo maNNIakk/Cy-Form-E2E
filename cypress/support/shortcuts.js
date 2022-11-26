@@ -125,6 +125,8 @@ Cypress.Commands.add('emailError', () => {
       .should('contain', 'E-mail incorreto especificado');
 })
 
+//Check if error message is not visible, yield list element, interact with it, leave
+//it blank, check if error message is visible with correct text
 Cypress.Commands.add('whereFoundError', () => {
 
    cy.get('.b24-form-control-alert-message')
@@ -136,9 +138,12 @@ Cypress.Commands.add('whereFoundError', () => {
       .focusOut();
    cy.get('.b24-form-control-alert-message')
       .eq(32)
-      .should('be.visible');
+      .should('be.visible')
+       .and('contain','O campo é obrigatório');
 })
 
+//Check if error message is not visible, yield list element, interact with it, leave
+//it blank, check if error message is visible with correct text
 Cypress.Commands.add('whichProductError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(33)
@@ -155,6 +160,8 @@ Cypress.Commands.add('whichProductError', () => {
 
 })
 
+//Check if radio error message if not visible, yield first radio, interact with it, leave
+//blank, check if error message is visible with correct text
 Cypress.Commands.add('radioError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(34)
@@ -169,10 +176,20 @@ Cypress.Commands.add('radioError', () => {
       .and('contain', 'O campo é obrigatório')
 })
 
-Cypress.Commands.add('driverLicense', () => {
+//WARNING: driverLicense, unknownField and attRadioError only shows up after
+//radio "Preencher Formulário" is checked, clickRadio() below was created to supply it
+Cypress.Commands.add('clickRadio', () => {
    cy.get('[type="radio"]')
       .eq(0)
       .click();
+})
+
+//Click on radio "Preencher Formulário",then check if Driver license is checked by default
+//and error message is not visible, then UNCHECK the Driver license radio, take focus out
+//of it, and check if error message is displayed correctly, with the correct text
+Cypress.Commands.add('driverLicense', () => {
+   
+   cy.clickRadio();
    cy.get('input[type="checkbox"]')
       .eq(0)
       .should('be.checked');
@@ -189,10 +206,13 @@ Cypress.Commands.add('driverLicense', () => {
 
 })
 
+//Don't know the purpose of this element, probably a bug, validated it anyway
+//Click on radio "Preencher formulário", then check if error message is not visible,
+// interact with it, focus out, then check if error message is displayed correctly,
+//with correct text
 Cypress.Commands.add('unknownField', () => {
-   cy.get('[type="radio"]')
-      .eq(0)
-      .click();
+
+   cy.clickRadio()
    cy.get('.b24-form-control-alert-message')
       .eq(36)
       .should('not.be.visible');
@@ -205,6 +225,9 @@ Cypress.Commands.add('unknownField', () => {
       .should('be.visible');
 })
 
+//Check if error message is not visible(as it should), then interact with the element
+//leave it blank, take focus out, and check if error message is NOT displayed,
+//since this isn't a required field
 Cypress.Commands.add('dailyKmError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(37)
@@ -218,11 +241,11 @@ Cypress.Commands.add('dailyKmError', () => {
       .should('not.be.visible')
 })
 
+//Check if error message is not visible(as it should), then interact with the element
+//leave it blank, take focus out, and check if error message is NOT displayed,
+//since this isn't a required field
 Cypress.Commands.add('attRadioError', () => {
 
-   cy.get('[type="radio"]')
-      .eq(0)
-      .click();
    cy.get('.b24-form-control-alert-message')
       .eq(38)
       .should('not.be.visible');
@@ -234,6 +257,9 @@ Cypress.Commands.add('attRadioError', () => {
       .should('not.be.visible');
 })
 
+//Check if error message exists but its not visible(as it should), then interact with
+//the element, leave it blank, and check if error message is NOT displayed
+//since this isn't a required field
 Cypress.Commands.add('commentError', () => {
    cy.get('.b24-form-control-alert-message')
       .eq(39)
