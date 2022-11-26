@@ -1,3 +1,5 @@
+// ### THIS FILE CONTAINS CUSTOM COMMANDS FOR UNIT AND E2E VALIDATION TESTS IN FORM 79 ###
+
 // Field only show validation errors after focus is lost by the element, this function
 // below click on textarea element to trigger the focus out of primary  element
 Cypress.Commands.add('focusOut', () => {
@@ -246,6 +248,7 @@ Cypress.Commands.add('dailyKmError', () => {
 //since this isn't a required field
 Cypress.Commands.add('attRadioError', () => {
 
+   cy.clickRadio();
    cy.get('.b24-form-control-alert-message')
       .eq(38)
       .should('not.be.visible');

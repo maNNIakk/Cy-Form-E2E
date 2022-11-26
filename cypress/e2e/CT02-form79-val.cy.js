@@ -6,7 +6,10 @@ describe('All-in-one validation tests', () => {
         cy.visit(Cypress.env('baseUrl'))
     })
 
-    it('All error messages validations tests in single try', () => {
+    //All error validation tests from form79 in a single custom command
+    // ### All functions descriptions and references ##
+    //           ## on support/shortcuts.js ### 
+    it('Integrated form79 validations', () => {
         cy.form79Validations();
     })
 })
